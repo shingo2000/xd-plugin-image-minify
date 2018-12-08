@@ -15,10 +15,16 @@
     "label" : "Image minify",
     "type" : "menu",
     "menuItems":[{
-           "label":"Minify Selected Images",
+           "label":{
+             "default": "Minify Selected Images",
+             "ja": "選択した画像を縮小する"
+           },
            "commandId":"minifyImages"
          },{
-            "label":"Setting",
+            "label":{
+              "default": "Setting",
+              "ja": "設定"
+            },
             "commandId":"setting"
          }]
   } ],
