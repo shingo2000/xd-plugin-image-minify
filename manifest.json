@@ -1,0 +1,20 @@
+{
+  "name" : "Image minify",
+  "host" : {
+    "app" : "XD",
+    "minVersion" : "13.0.0"
+  },
+  "description" : "Sample plugin for Adobe XD, providing starter project scaffolding.",
+  "id" : "27e2d580",
+  "icons" : [ {
+    "path" : "images/icon.png",
+    "width" : 96,
+    "height" : 96
+  } ],
+  "uiEntryPoints" : [ {
+    "label" : "My Plugin",
+    "type" : "menu",
+    "commandId" : "myPluginCommand"
+  } ],
+  "version" : "1.0.0"
+}
