@@ -12,9 +12,15 @@
     "height" : 96
   } ],
   "uiEntryPoints" : [ {
-    "label" : "My Plugin",
+    "label" : "Image minify",
     "type" : "menu",
-    "commandId" : "myPluginCommand"
+    "menuItems":[{
+           "label":"Minify Selected Images",
+           "commandId":"minifyImages"
+         },{
+            "label":"Setting",
+            "commandId":"setting"
+         }]
   } ],
   "version" : "1.0.0"
 }
