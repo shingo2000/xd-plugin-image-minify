@@ -137,31 +137,57 @@ async function minifyImage(node){
 
 
 function showErrorNoSelect(){
+  if(application.appLanguage == 'ja'){
+    error('画像を選択してください','縮小する画像を選択してください。');
+  }else{
     error('Select Images','Please select images to minify.');
+  }
 }
 
 function showCompleteAlert(completeNodeNameList){
   const count = completeNodeNameList.length;
-  let title, text, options;
+  let text, options, label;
+  const dialogLabels = {
+    default:{
+      title: 'Complete',
+      text:[
+        'Minify of no images are completed.',
+        'Minify of one image is completed.',
+        'Minify of ' + count + ' images are completed.'
+      ]
+    },
+    ja:{
+      title: '完了',
+      text:[
+        '画像を縮小できませんでした。',
+        '１つの画像を縮小しました。',
+        count + 'の画像を縮小しました。'
+      ]
+    }
+  }
+  if(application.appLanguage == 'ja'){
+    label = dialogLabels.ja;
+  }else{
+    label = dialogLabels.default;
+  }
 
 
-  title = 'Complete';
   options = [];
-  
+
   if(count == 0){
-    text = 'Minify of no images are completed.';
+    text = label.text[0];
   }else{
     if(count == 1){
-      text = 'Minify of one image is completed.';
+      text = label.text[1];
     }else{
-      text = 'Minify of '+ count + ' images are completed.';
+      text = label.text[2];
     }
     completeNodeNameList.forEach(function(item){
       options.push('* ' + item);
     })
   }
 
-  alert(title,text,options);
+  alert(label.title,text,options);
 }
 
 function checkIsCompressed(node){
@@ -177,9 +203,9 @@ function checkIsCompressed(node){
 }
 
 function createSettingDialog(setting){
-
+  let labels;
   let saveButton, cancelButton, qualityInput, scaleInput, rerunInput;
-
+  console.log(application.appLanguage);
   // Create Html Element
   if(!settingDialog){
     const dialogLabels = {
@@ -200,8 +226,11 @@ function createSettingDialog(setting){
         save:'保存'
       }
     }
-
-    const labels = dialogLabels.ja;
+    if(application.appLanguage == 'ja'){
+      labels = dialogLabels.ja;
+    }else{
+      labels = dialogLabels.default;
+    }
 
     settingDialog = document.createElement("dialog");
     var html = '<style>form {width: 240px;}.h1 {align-items: center;justify-content: space-between;display: flex;flex-direction: row;}.icon {border-radius: 4px;width: 24px;height: 24px;overflow: hidden;}</style>';
