@@ -8,6 +8,8 @@ const nodeNameSuffix = '_Image_minify';
 const settingFileName = 'setting.json';
 
 let settingDialog;
+let resultDialog;
+
 let setting = {
   scale: 1,
   quality: 80,
@@ -32,7 +34,8 @@ async function settingCommand(selection) {
 
     await loadSetting();
     var result = await createSettingDialog(setting).showModal();
-    if(result){
+    console.log(result);
+    if(result instanceof Object){
       setting = result;
       console.log('Settting changed:',setting);
       await saveSetting();
@@ -189,7 +192,7 @@ function createSettingDialog(setting){
     e.preventDefault();
   });
   cancelButton.addEventListener('click', function(e){
-    settingDialog.close(false);
+    settingDialog.close('reasonCanceled');
     e.preventDefault();
   });
 
@@ -200,6 +203,8 @@ function createSettingDialog(setting){
 
   return settingDialog;
 }
+
+
 async function saveSetting(){
 
   return new Promise(async resolve => {
