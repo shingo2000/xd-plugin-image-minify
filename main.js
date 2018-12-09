@@ -7,26 +7,6 @@ const fileNameSuffix = '_minify';
 const nodeNameSuffix = '_Image_minify';
 
 let dialog;
-
-const dialogLabels = {
-  default: {
-    setting:'Setting',
-    scale:'Scale (0.1 - 5)',
-    quality:'Jpg Quality (1 - 100)',
-    rerun:'Rerun Minify',
-    cancel:'Cancel',
-    save:'Save'
-  },
-  ja: {
-    setting:'設定',
-    scale:'画像サイズの比率 (0.5 - 5)',
-    quality:'Jpg画質 (1 - 100)',
-    rerun:'画像を再縮小を許可する',
-    cancel:'キャンセル',
-    save:'保存'
-  }
-}
-
 let setting = {
   scale: 1,
   quality: 80,
@@ -34,6 +14,8 @@ let setting = {
 }
 
 async function minifyImagesCommand(selection) {
+  await loadSetting();
+
   console.log('compressImageCommand: ',selection.items.length);
 
   for(let i = 0; i < selection.items.length; i++){
@@ -134,20 +116,46 @@ function checkIsCompressed(node){
 }
 
 async function settingCommand(selection) {
-    console.log("setting is running!");
+
+    await loadSetting();
     var result = await createDialog(setting).showModal();
-    setting = result;
-    console.log('Settting changed:',setting);
+    if(result){
+      setting = result;
+      console.log('Settting changed:',setting);
+      await saveSetting();
+    }else{
+      console.log('Setting canceled');
+    }
 
 }
 
 function createDialog(setting){
 
   let saveButton, cancelButton, qualityInput, scaleInput, rerunInput;
-  const labels = dialogLabels.ja;
 
   // Create Html Element
   if(!dialog){
+    const dialogLabels = {
+      default: {
+        setting:'Setting',
+        scale:'Scale (0.1 - 5)',
+        quality:'Jpg Quality (1 - 100)',
+        rerun:'Rerun Minify',
+        cancel:'Cancel',
+        save:'Save'
+      },
+      ja: {
+        setting:'設定',
+        scale:'画像サイズの比率 (0.5 - 5)',
+        quality:'Jpg画質 (1 - 100)',
+        rerun:'画像を再縮小を許可する',
+        cancel:'キャンセル',
+        save:'保存'
+      }
+    }
+
+    const labels = dialogLabels.ja;
+
     dialog = document.createElement("dialog");
     var html = '<style>form {width: 240px;}.h1 {align-items: center;justify-content: space-between;display: flex;flex-direction: row;}.icon {border-radius: 4px;width: 24px;height: 24px;overflow: hidden;}</style>';
     html += '<form method="dialog">';
@@ -192,7 +200,39 @@ function createDialog(setting){
 
   return dialog;
 }
+async function saveSetting(){
 
+  return new Promise(async resolve => {
+    try{
+      const folder = await fs.getDataFolder();
+      console.log('saveSetting', folder.nativePath);
+      const file = await folder.createEntry("setting.txt", {overwrite: true});
+      file.write(JSON.stringify(setting));
+    }catch(error){
+      console.log(error);
+    }
+    resolve('resolved');
+  });
+}
+
+async function loadSetting(){
+  return new Promise(async resolve => {
+    try{
+      const folder = await fs.getDataFolder();
+      console.log('loadSetting', folder.nativePath);
+      const file = await folder.getEntry("setting.txt");
+      const contents = await file.read();
+      const contentObj = JSON.parse(contents);
+      if(contentObj){
+        Object.assign(setting,contentObj);
+        console.log('loadComplete', setting);
+      }
+    }catch(error){
+      console.log(error);
+    }
+    resolve('resolved');
+  });
+}
 
 
 module.exports = {
