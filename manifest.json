@@ -17,12 +17,12 @@
     "menuItems":[{
            "label":{
              "default": "Minify Selected Images",
-             "ja": "選択した画像を縮小する"
+             "ja": "選択した画像を縮小"
            },
            "commandId":"minifyImages"
          },{
             "label":{
-              "default": "Setting",
+              "default": "Settings",
               "ja": "設定"
             },
             "commandId":"setting"

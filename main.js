@@ -2,6 +2,7 @@ const Artboard = require("scenegraph");
 const ImageFill = require("scenegraph").ImageFill;
 const fs = require("uxp").storage.localFileSystem;
 const application = require("application");
+const { alert, error } = require("./lib/dialogs.js");
 
 const fileNameSuffix = '_minify';
 const nodeNameSuffix = '_Image_minify';
@@ -9,26 +10,37 @@ const settingFileName = 'setting.json';
 
 let settingDialog;
 let resultDialog;
-
 let setting = {
   scale: 1,
   quality: 80,
   rerun:false
 }
+let completeNodeNameList = [];
 
 async function minifyImagesCommand(selection) {
+
   await loadSetting();
 
-  console.log('compressImageCommand: ',selection.items.length);
+  console.log('minifyImageCommand: ',selection.items.length);
 
-  for(let i = 0; i < selection.items.length; i++){
-    let node = selection.items[i];
-    if(node){
-      await minifyImage(node);
+  if(selection.items.length == 0){
+    showErrorNoSelect();
+  }else{
+    completeNodeNameList = [];
+
+    for(let i = 0; i < selection.items.length; i++){
+      let node = selection.items[i];
+      if(node){
+        await minifyImage(node);
+      }
     }
+    showCompleteAlert(completeNodeNameList);
+
   }
 
+
 }
+
 
 async function settingCommand(selection) {
 
@@ -50,7 +62,7 @@ async function minifyImage(node){
   return new Promise(async resolve => {
 
     console.log('---------');
-    console.log('compressImage: ',node.parent.name, '/' , node.name);
+    console.log('minifyImage: ',node.parent.name, '/' , node.name);
 
     if(!node.fill || !(node.fill instanceof ImageFill)){
       if(node instanceof Artboard){
@@ -59,7 +71,7 @@ async function minifyImage(node){
         for(let j = 0; j < node.children.length; j++){
           let child = node.children.at(j);
           if(child){
-            await compressImage(child);
+            await minifyImage(child);
           }
         }
       }else{
@@ -74,6 +86,7 @@ async function minifyImage(node){
         // todo: mimeTypeの判定の見直し
         const isJpg = (node.fill.mimeType == 'image/jpeg');
         let fileName = node.guid + fileNameSuffix;
+        let originalNodeName = node.name;
 
         if(setting.rerun || !checkIsCompressed(node)){
 
@@ -108,6 +121,8 @@ async function minifyImage(node){
           }
           node.fill = new ImageFill(file);
           node.opacity = tempOpacity;
+
+          completeNodeNameList.push(originalNodeName);
         }
 
       }catch(error){
@@ -118,6 +133,35 @@ async function minifyImage(node){
 
     resolve('resolved');
   });
+}
+
+
+function showErrorNoSelect(){
+    error('Select Images','Please select images to minify.');
+}
+
+function showCompleteAlert(completeNodeNameList){
+  const count = completeNodeNameList.length;
+  let title, text, options;
+
+
+  title = 'Complete';
+  options = [];
+  
+  if(count == 0){
+    text = 'Minify of no images are completed.';
+  }else{
+    if(count == 1){
+      text = 'Minify of one image is completed.';
+    }else{
+      text = 'Minify of '+ count + ' images are completed.';
+    }
+    completeNodeNameList.forEach(function(item){
+      options.push('* ' + item);
+    })
+  }
+
+  alert(title,text,options);
 }
 
 function checkIsCompressed(node){
@@ -140,7 +184,7 @@ function createSettingDialog(setting){
   if(!settingDialog){
     const dialogLabels = {
       default: {
-        setting:'Setting',
+        setting:'Settings',
         scale:'Scale (0.1 - 5)',
         quality:'Jpg Quality (1 - 100)',
         rerun:'Rerun Minify',
@@ -162,7 +206,7 @@ function createSettingDialog(setting){
     settingDialog = document.createElement("dialog");
     var html = '<style>form {width: 240px;}.h1 {align-items: center;justify-content: space-between;display: flex;flex-direction: row;}.icon {border-radius: 4px;width: 24px;height: 24px;overflow: hidden;}</style>';
     html += '<form method="dialog">';
-    html += '<h1 class="h1"><span>' + labels.setting + '</span><img class="icon" src="./assets/icon.png" /></h1><hr />';
+    html += '<h1 class="h1"><span>' + labels.setting + '</span><img class="icon" src="./images/icon.png" /></h1><hr />';
     html += '<label><span>' + labels.scale + '</span>';
     html += '<input type="number" min="0.1" max="5" value="1" id="scaleInput" /></label>';
     html += '<label><span>' + labels.quality + '</span>';
