@@ -1,4 +1,4 @@
-const Artboard = require("scenegraph");
+const Artboard = require("scenegraph").Artboard;
 const ImageFill = require("scenegraph").ImageFill;
 const fs = require("uxp").storage.localFileSystem;
 const application = require("application");
@@ -63,6 +63,7 @@ async function minifyImage(node){
 
     console.log('---------');
     console.log('minifyImage: ',node.parent.name, '/' , node.name);
+    console.log(node.fill);
 
     if(!node.fill || !(node.fill instanceof ImageFill)){
       if(node instanceof Artboard){

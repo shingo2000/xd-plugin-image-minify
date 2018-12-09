@@ -4,7 +4,7 @@
     "app" : "XD",
     "minVersion" : "13.0.0"
   },
-  "description" : "Sample plugin for Adobe XD, providing starter project scaffolding.",
+  "description" : "Image minify reduces the image quality and resolution of the image layer. By optimizing the image used, it reduces the file size when exporting to a PDF file.",
   "id" : "27e2d580",
   "icons" : [ {
     "path" : "images/icon.png",
