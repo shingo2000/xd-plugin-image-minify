@@ -5,8 +5,9 @@ const application = require("application");
 
 const fileNameSuffix = '_minify';
 const nodeNameSuffix = '_Image_minify';
+const settingFileName = 'setting.json';
 
-let dialog;
+let settingDialog;
 let setting = {
   scale: 1,
   quality: 80,
@@ -27,6 +28,19 @@ async function minifyImagesCommand(selection) {
 
 }
 
+async function settingCommand(selection) {
+
+    await loadSetting();
+    var result = await createSettingDialog(setting).showModal();
+    if(result){
+      setting = result;
+      console.log('Settting changed:',setting);
+      await saveSetting();
+    }else{
+      console.log('Setting canceled');
+    }
+
+}
 
 async function minifyImage(node){
 
@@ -115,26 +129,12 @@ function checkIsCompressed(node){
   }
 }
 
-async function settingCommand(selection) {
-
-    await loadSetting();
-    var result = await createDialog(setting).showModal();
-    if(result){
-      setting = result;
-      console.log('Settting changed:',setting);
-      await saveSetting();
-    }else{
-      console.log('Setting canceled');
-    }
-
-}
-
-function createDialog(setting){
+function createSettingDialog(setting){
 
   let saveButton, cancelButton, qualityInput, scaleInput, rerunInput;
 
   // Create Html Element
-  if(!dialog){
+  if(!settingDialog){
     const dialogLabels = {
       default: {
         setting:'Setting',
@@ -156,7 +156,7 @@ function createDialog(setting){
 
     const labels = dialogLabels.ja;
 
-    dialog = document.createElement("dialog");
+    settingDialog = document.createElement("dialog");
     var html = '<style>form {width: 240px;}.h1 {align-items: center;justify-content: space-between;display: flex;flex-direction: row;}.icon {border-radius: 4px;width: 24px;height: 24px;overflow: hidden;}</style>';
     html += '<form method="dialog">';
     html += '<h1 class="h1"><span>' + labels.setting + '</span><img class="icon" src="./assets/icon.png" /></h1><hr />';
@@ -167,8 +167,8 @@ function createDialog(setting){
     html += '<label class="row"><input type="checkbox" id="rerunInput" /><span>' + labels.rerun + '</span></label>';
     html += '<footer><button uxp-variant="primary" id="cancelButton">' + labels.cancel + '</button><button type="submit" uxp-variant="cta" id="saveButton">' + labels.save + '</button></footer></form>';
 
-    dialog.innerHTML = html;
-    document.body.appendChild(dialog);
+    settingDialog.innerHTML = html;
+    document.body.appendChild(settingDialog);
 
   }
 
@@ -181,7 +181,7 @@ function createDialog(setting){
 
   // Event
   saveButton.addEventListener('click', function(e){
-    dialog.close({
+    settingDialog.close({
       scale: scaleInput.value - 0,
       quality: qualityInput.value - 0,
       rerun: rerunInput.checked
@@ -189,7 +189,7 @@ function createDialog(setting){
     e.preventDefault();
   });
   cancelButton.addEventListener('click', function(e){
-    dialog.close(false);
+    settingDialog.close(false);
     e.preventDefault();
   });
 
@@ -198,7 +198,7 @@ function createDialog(setting){
   qualityInput.value = setting.quality;
   rerunInput.checked = setting.rerun;
 
-  return dialog;
+  return settingDialog;
 }
 async function saveSetting(){
 
@@ -206,7 +206,7 @@ async function saveSetting(){
     try{
       const folder = await fs.getDataFolder();
       console.log('saveSetting', folder.nativePath);
-      const file = await folder.createEntry("setting.txt", {overwrite: true});
+      const file = await folder.createEntry(settingFileName, {overwrite: true});
       file.write(JSON.stringify(setting));
     }catch(error){
       console.log(error);
@@ -220,7 +220,7 @@ async function loadSetting(){
     try{
       const folder = await fs.getDataFolder();
       console.log('loadSetting', folder.nativePath);
-      const file = await folder.getEntry("setting.txt");
+      const file = await folder.getEntry(settingFileName);
       const contents = await file.read();
       const contentObj = JSON.parse(contents);
       if(contentObj){
