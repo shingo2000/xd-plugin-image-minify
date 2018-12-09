@@ -21,7 +21,7 @@ async function minifyImagesCommand(selection) {
 
   await loadSetting();
 
-  console.log('minifyImageCommand: ',selection.items.length);
+  // console.log('minifyImageCommand: ',selection.items.length);
 
   if(selection.items.length == 0){
     showErrorNoSelect();
@@ -46,13 +46,13 @@ async function settingCommand(selection) {
 
     await loadSetting();
     var result = await createSettingDialog(setting).showModal();
-    console.log(result);
+    //console.log(result);
     if(result instanceof Object){
       setting = result;
-      console.log('Settting changed:',setting);
+      //console.log('Settting changed:',setting);
       await saveSetting();
     }else{
-      console.log('Setting canceled');
+      //console.log('Setting canceled');
     }
 
 }
@@ -60,10 +60,11 @@ async function settingCommand(selection) {
 async function minifyImage(node){
 
   return new Promise(async resolve => {
-
+    /*
     console.log('---------');
     console.log('minifyImage: ',node.parent.name, '/' , node.name);
     console.log(node.fill);
+    */
 
     if(!node.fill || !(node.fill instanceof ImageFill)){
       if(node instanceof Artboard){
@@ -76,11 +77,11 @@ async function minifyImage(node){
           }
         }
       }else{
-        console.log('その他のオブジェクト');
+        //console.log('その他のオブジェクト');
       }
 
     }else{
-      console.log('画像オブジェクト: ',node.name);
+      //console.log('画像オブジェクト: ',node.name);
 
       try{
 
@@ -89,7 +90,7 @@ async function minifyImage(node){
         let fileName = node.guid + fileNameSuffix;
         let originalNodeName = node.name;
 
-        if(setting.rerun || !checkIsCompressed(node)){
+        if(!checkIsCompressed(node) || setting.rerun){
 
           if(isJpg){
             fileName += '.jpg';
@@ -118,7 +119,7 @@ async function minifyImage(node){
 
           const results = await application.createRenditions(renditionSettings);
           if(results){
-              console.log(`PNG rendition has been saved at ${results[0].outputFile.nativePath}`);
+              //console.log(`PNG rendition has been saved at ${results[0].outputFile.nativePath}`);
           }
           node.fill = new ImageFill(file);
           node.opacity = tempOpacity;
@@ -206,7 +207,7 @@ function checkIsCompressed(node){
 function createSettingDialog(setting){
   let labels;
   let saveButton, cancelButton, qualityInput, scaleInput, rerunInput;
-  console.log(application.appLanguage);
+
   // Create Html Element
   if(!settingDialog){
     const dialogLabels = {
@@ -284,7 +285,7 @@ async function saveSetting(){
   return new Promise(async resolve => {
     try{
       const folder = await fs.getDataFolder();
-      console.log('saveSetting', folder.nativePath);
+      //console.log('saveSetting', folder.nativePath);
       const file = await folder.createEntry(settingFileName, {overwrite: true});
       file.write(JSON.stringify(setting));
     }catch(error){
@@ -298,13 +299,13 @@ async function loadSetting(){
   return new Promise(async resolve => {
     try{
       const folder = await fs.getDataFolder();
-      console.log('loadSetting', folder.nativePath);
+      //console.log('loadSetting', folder.nativePath);
       const file = await folder.getEntry(settingFileName);
       const contents = await file.read();
       const contentObj = JSON.parse(contents);
       if(contentObj){
         Object.assign(setting,contentObj);
-        console.log('loadComplete', setting);
+        //console.log('loadComplete', setting);
       }
     }catch(error){
       console.log(error);
