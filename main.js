@@ -153,9 +153,9 @@ function showCompleteAlert(completeNodeNameList){
     default:{
       title: 'Complete',
       text:[
-        'Minify of no images are completed.',
-        'Minify of one image is completed.',
-        'Minify of ' + count + ' images are completed.'
+        'No images have been minified.',
+        'One image has been minified.',
+        count + ' images have been minified.'
       ]
     },
     ja:{
@@ -213,8 +213,8 @@ function createSettingDialog(setting){
     const dialogLabels = {
       default: {
         setting:'Settings',
-        scale:'Scale (0.1 - 5)',
-        quality:'Jpg Quality (1 - 100)',
+        scale:'Image Scale (0.1 - 5)',
+        quality:'JPG Quality (1 - 100)',
         rerun:'Rerun Minify',
         cancel:'Cancel',
         save:'Save'
@@ -222,8 +222,8 @@ function createSettingDialog(setting){
       ja: {
         setting:'設定',
         scale:'画像サイズの比率 (0.5 - 5)',
-        quality:'Jpg画質 (1 - 100)',
-        rerun:'画像を再縮小を許可する',
+        quality:'JPG画質 (1 - 100)',
+        rerun:'縮小済み画像の再縮小',
         cancel:'キャンセル',
         save:'保存'
       }
