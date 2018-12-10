@@ -68,7 +68,7 @@ async function minifyImage(node){
 
     if(!node.fill || !(node.fill instanceof ImageFill)){
       if(node instanceof Artboard){
-        console.log('Artboardオブジェクト');
+        //console.log('Artboardオブジェクト');
         // Groupオブジェクトの場合は Plugin Error: Plugin made a change outside the current edit context になるため、子を辿らない
         for(let j = 0; j < node.children.length; j++){
           let child = node.children.at(j);
