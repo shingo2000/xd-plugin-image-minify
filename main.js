@@ -60,11 +60,12 @@ async function settingCommand(selection) {
 async function minifyImage(node){
 
   return new Promise(async resolve => {
-    /*
+
     console.log('---------');
     console.log('minifyImage: ',node.parent.name, '/' , node.name);
+    console.log(node);
     console.log(node.fill);
-    */
+
 
     if(!node.fill || !(node.fill instanceof ImageFill)){
       if(node instanceof Artboard){
@@ -89,8 +90,11 @@ async function minifyImage(node){
         const isJpg = (node.fill.mimeType == 'image/jpeg');
         let fileName = node.guid + fileNameSuffix;
         let originalNodeName = node.name;
+        const imageScale = checkImageScale(node);
+        const isScaleDown = (imageScale > setting.scale);
+        const isCompressed = checkIsCompressed(node);
 
-        if(!checkIsCompressed(node) || setting.rerun){
+        if(isScaleDown && (!isCompressed || setting.rerun)){
 
           if(isJpg){
             fileName += '.jpg';
@@ -119,12 +123,13 @@ async function minifyImage(node){
 
           const results = await application.createRenditions(renditionSettings);
           if(results){
-              //console.log(`PNG rendition has been saved at ${results[0].outputFile.nativePath}`);
+              console.log(`PNG rendition has been saved at ${results[0].outputFile.nativePath}`);
           }
           node.fill = new ImageFill(file);
           node.opacity = tempOpacity;
 
           completeNodeNameList.push(originalNodeName);
+
         }
 
       }catch(error){
@@ -185,11 +190,11 @@ function showCompleteAlert(completeNodeNameList){
       text = label.text[2];
     }
     completeNodeNameList.forEach(function(item){
-      options.push('* ' + item);
+      options.push(item);
     })
   }
 
-  alert(label.title,text,options);
+  alert(label.title,text,options.join(' / '));
 }
 
 function checkIsCompressed(node){
@@ -202,6 +207,12 @@ function checkIsCompressed(node){
     node.name = nodeName;
     return false;
   }
+}
+
+function checkImageScale(node){
+
+  const scale = Math.max(node.fill.naturalWidth/node.width, node.fill.naturalHeight/node.height);
+  return scale;
 }
 
 function createSettingDialog(setting){
