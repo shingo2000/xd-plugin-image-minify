@@ -60,12 +60,10 @@ async function settingCommand(selection) {
 async function minifyImage(node){
 
   return new Promise(async resolve => {
-
+    /*
     console.log('---------');
     console.log('minifyImage: ',node.parent.name, '/' , node.name);
-    console.log(node);
-    console.log(node.fill);
-
+    */
 
     if(!node.fill || !(node.fill instanceof ImageFill)){
       if(node instanceof Artboard){
@@ -82,7 +80,8 @@ async function minifyImage(node){
       }
 
     }else{
-      //console.log('画像オブジェクト: ',node.name);
+      console.log('画像オブジェクト: ',node.name);
+      console.log(node.fill);
 
       try{
 
@@ -92,43 +91,47 @@ async function minifyImage(node){
         let originalNodeName = node.name;
         const imageScale = checkImageScale(node);
         const isScaleDown = (imageScale > setting.scale);
-        const isCompressed = checkIsCompressed(node);
 
-        if(isScaleDown && (!isCompressed || setting.rerun)){
+        if(isScaleDown){
 
-          if(isJpg){
-            fileName += '.jpg';
-          }else{
-            fileName +='.png';
+          const isCompressed = checkIsCompressed(node);
+
+          if(!isCompressed || setting.rerun){
+
+            if(isJpg){
+              fileName += '.jpg';
+            }else{
+              fileName +='.png';
+            }
+
+            const folder = await fs.getTemporaryFolder();
+            const file = await folder.createFile(fileName, {overwrite: true});
+
+
+            let renditionSettings = [{
+              node: node,
+              outputFile: file,
+              type: application.RenditionType.PNG,
+              scale: setting.scale
+            }];
+
+            if(isJpg){
+              renditionSettings[0].type = application.RenditionType.JPG;
+              renditionSettings[0].quality = setting.quality;
+            }
+
+            const tempOpacity = node.opacity;
+            node.opacity = 1;
+
+            const results = await application.createRenditions(renditionSettings);
+            if(results){
+                console.log(`PNG rendition has been saved at ${results[0].outputFile.nativePath}`);
+            }
+            node.fill = new ImageFill(file);
+            node.opacity = tempOpacity;
+
+            completeNodeNameList.push(originalNodeName);
           }
-
-          const folder = await fs.getTemporaryFolder();
-          const file = await folder.createFile(fileName, {overwrite: true});
-
-
-          let renditionSettings = [{
-            node: node,
-            outputFile: file,
-            type: application.RenditionType.PNG,
-            scale: setting.scale
-          }];
-
-          if(isJpg){
-            renditionSettings[0].type = application.RenditionType.JPG;
-            renditionSettings[0].quality = setting.quality;
-          }
-
-          const tempOpacity = node.opacity;
-          node.opacity = 1;
-
-          const results = await application.createRenditions(renditionSettings);
-          if(results){
-              console.log(`PNG rendition has been saved at ${results[0].outputFile.nativePath}`);
-          }
-          node.fill = new ImageFill(file);
-          node.opacity = tempOpacity;
-
-          completeNodeNameList.push(originalNodeName);
 
         }
 
