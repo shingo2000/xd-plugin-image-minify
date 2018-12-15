@@ -6,6 +6,14 @@ Image minify is Adobe XD plugin that reduces the image quality and resolution of
 
 Image minifyは画像レイヤーの画質と解像度を削減するXDプラグインです。使用画像を最適化することで、PDFファイルにエクスポートした際のファイル容量を削減します。
 
+## Install
+
+![Install](https://user-images.githubusercontent.com/340380/50039227-a4574d00-0071-11e9-9e99-e6ed483fe5e2.png)
+
+After starting Adobe XD, you can install it by "Plugins > Discover Plugins > Image minify" from the menu.
+
+Adobe XDを起動後、メニューから「プラグイン ＞ プラグインを見つける ＞ Image minify」でインストールできます。
+
 ## Tutorial Video (YouTube)
 
 ### English
