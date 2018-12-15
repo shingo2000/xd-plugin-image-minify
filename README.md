@@ -6,7 +6,7 @@ Image minify is Adobe XD plugin that reduces the image quality and resolution of
 
 Image minifyは画像レイヤーの画質と解像度を削減するXDプラグインです。使用画像を最適化することで、PDFファイルにエクスポートした際のファイル容量を削減します。
 
-## Tutorial Video
+## Tutorial Video (YouTube)
 
 ### English
 
@@ -14,7 +14,7 @@ Coming Soon.
 
 ### 日本語
 
-[![Tutorial Video](https://img.youtube.com/vi/cdWWiFQPk8I/0.jpg) Tutorial Video](https://www.youtube.com/watch?v=cdWWiFQPk8I)
+[![Tutorial Video](https://img.youtube.com/vi/cdWWiFQPk8I/0.jpg)](https://www.youtube.com/watch?v=cdWWiFQPk8I)
 
 ## More Info
 
