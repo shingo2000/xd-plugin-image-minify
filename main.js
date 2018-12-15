@@ -80,8 +80,8 @@ async function minifyImage(node){
       }
 
     }else{
-      console.log('画像オブジェクト: ',node.name);
-      console.log(node.fill);
+      //console.log('画像オブジェクト: ',node.name);
+      //console.log(node.fill);
 
       try{
 
@@ -125,7 +125,7 @@ async function minifyImage(node){
 
             const results = await application.createRenditions(renditionSettings);
             if(results){
-                console.log(`PNG rendition has been saved at ${results[0].outputFile.nativePath}`);
+                //console.log(`PNG rendition has been saved at ${results[0].outputFile.nativePath}`);
             }
             node.fill = new ImageFill(file);
             node.opacity = tempOpacity;
@@ -136,7 +136,7 @@ async function minifyImage(node){
         }
 
       }catch(error){
-        console.log(error);
+        //console.log(error);
       }
     }
 
@@ -303,7 +303,7 @@ async function saveSetting(){
       const file = await folder.createEntry(settingFileName, {overwrite: true});
       file.write(JSON.stringify(setting));
     }catch(error){
-      console.log(error);
+      //console.log(error);
     }
     resolve('resolved');
   });
@@ -322,7 +322,7 @@ async function loadSetting(){
         //console.log('loadComplete', setting);
       }
     }catch(error){
-      console.log(error);
+      //console.log(error);
     }
     resolve('resolved');
   });
