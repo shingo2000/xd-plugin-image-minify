@@ -10,12 +10,6 @@ Image minifyは画像レイヤーの画質と解像度を削減するXDプラグ
 
 https://xd.adobelanding.com/en/xd-plugin-download/?name=27e2d580
 
-![Install](https://user-images.githubusercontent.com/340380/50039227-a4574d00-0071-11e9-9e99-e6ed483fe5e2.png)
-
-After starting Adobe XD, you can install it by "Plugins > Discover Plugins > Image minify" from the menu.
-
-Adobe XDを起動後、メニューから「プラグイン ＞ プラグインを見つける ＞ Image minify」でインストールできます。
-
 ## Tutorial Video (YouTube)
 
 ### English
