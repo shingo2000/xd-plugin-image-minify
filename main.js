@@ -162,7 +162,7 @@ function showCompleteAlert(completeNodeNameList){
       title: 'Complete',
       text:[
         'No images have been minified.',
-        'One image has been minified.',
+        '1 image has been minified.',
         count + ' images have been minified.'
       ]
     },

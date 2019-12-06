@@ -20,7 +20,7 @@ Adobe XDを起動後、メニューから「プラグイン ＞ プラグイン�
 
 ### English
 
-Coming Soon.
+[![Tutorial Video](https://img.youtube.com/vi/FuTgZal0fXs/0.jpg)](https://www.youtube.com/watch?v=FuTgZal0fXs)
 
 ### 日本語
 
