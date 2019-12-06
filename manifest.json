@@ -1,16 +1,21 @@
 {
+  "id" : "27e2d580",
   "name" : "Image minify",
   "host" : {
     "app" : "XD",
-    "minVersion" : "13.0.0"
+    "minVersion" : "17.0.0"
   },
   "description" : "Image minify reduces the image quality and resolution of the image layer. By optimizing the image used, it reduces the file size when exporting to a PDF file.",
-  "id" : "27e2d580",
-  "icons" : [ {
-    "path" : "images/icon.png",
-    "width" : 96,
-    "height" : 96
-  } ],
+  "summary": "Minify Image Layers",
+  "releaseNotes": "Supports image reduction in nested layer groups.",
+  "author": "Shingo Suzuki",
+  "helpUrl": "https://github.com/shingo2000/xd-plugin-image-minify",
+  "languages": ["en","ja"],
+  "icons" : [
+    { "width": 24, "height": 24, "path": "images/icon_24.png" },
+    { "width": 48, "height": 48, "path": "images/icon_48.png" }
+
+   ],
   "uiEntryPoints" : [ {
     "label" : "Image minify",
     "type" : "menu",
