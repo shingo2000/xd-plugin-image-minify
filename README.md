@@ -1,6 +1,6 @@
 # Image minify / Adobe XD Plugin
 
-![Image minify](./images/icon.png)
+![Image minify](https://user-images.githubusercontent.com/340380/70362241-970d2100-18c7-11ea-911e-c39c81ccf015.png)
 
 Image minify is Adobe XD plugin that reduces the image quality and resolution of the image layer. By optimizing the image used, it reduces the file size when exporting to a PDF file.
 
