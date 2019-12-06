@@ -1,4 +1,5 @@
 const Artboard = require("scenegraph").Artboard;
+const Group = require("scenegraph").Group;
 const ImageFill = require("scenegraph").ImageFill;
 const fs = require("uxp").storage.localFileSystem;
 const application = require("application");
@@ -66,9 +67,8 @@ async function minifyImage(node){
     */
 
     if(!node.fill || !(node.fill instanceof ImageFill)){
-      if(node instanceof Artboard){
-        //console.log('Artboardオブジェクト');
-        // Groupオブジェクトの場合は Plugin Error: Plugin made a change outside the current edit context になるため、子を辿らない
+      if(node instanceof Artboard || node instanceof Group){
+
         for(let j = 0; j < node.children.length; j++){
           let child = node.children.at(j);
           if(child){
