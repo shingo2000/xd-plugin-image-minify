@@ -3,7 +3,7 @@
   "name" : "Image minify",
   "host" : {
     "app" : "XD",
-    "minVersion" : "17.0.0"
+    "minVersion" : "17.0"
   },
   "description" : "Image minify reduces the image quality and resolution of the image layer. By optimizing the image used, it reduces the file size when exporting to a PDF file.",
   "summary": "Minify Image Layers",
